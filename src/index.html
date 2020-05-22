@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Weather_app</title>
+  </head>
+  <body>
+    <div id="wrapper-body">
+      <div class="background-image">
+        <div class="container">
+          <section class="section-main">
+            <form class="search-form" id="search-form">
+              <input
+                class="search-input"
+                type="text"
+                name="query"
+                autocomplete="off"
+                placeholder="Enter the city..."
+              />
+              <button
+                class="load-favorite"
+                type="button"
+                data-action="load-favorite"
+              >
+                Load more
+              </button>
+            </form>
+            <div class="favorites js-width-conteiner">
+              <button class="list-button favourite-prev" hidden=""></button>
+              <ul class="favorites-list"></ul>
+              <button class="list-button favorite-next" hidden=""></button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
