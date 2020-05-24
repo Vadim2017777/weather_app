@@ -2,7 +2,7 @@
 import '../styles/styles.css';
 import '../../node_modules/basiclightbox/dist/basicLightbox.min.css';
 import * as basicLightbox from 'basiclightbox';
-import galleryTemplate from '../templates/gallery-templates.hbs';
+import weatherTemplate from '../templates/weather_brodcast-template.hbs';
 import apiService from './services/apiService.js';
 import '@pnotify/core/dist/BrightTheme.css';
 import { alert, error } from '@pnotify/core/dist/PNotify';
@@ -11,69 +11,34 @@ import 'material-design-icons/iconfont/material-icons.css';
 import _ from 'lodash';
 
 const refs = {
-  searchForm: document.querySelector('#search-form'),
-  gallery: document.querySelector('#gallery'),
-  loadMoreBtn: document.querySelector(`button[data-action="load-more"]`),
+  input: document.getElementById('search-input'),
+  weather: document.getElementById('weather-info-today-init'),
 };
 
-refs.searchForm.addEventListener(
-  'input',
-  _.debounce(searchFormInputHandler, 1000),
-);
-refs.loadMoreBtn.addEventListener('click', loadMoreBtnHandler);
-refs.gallery.addEventListener('click', ImageclickHandler);
+refs.input.addEventListener('input', _.debounce(handleInputValue, 1000));
 
-function searchFormInputHandler(e) {
+function handleInputValue(e) {
   e.preventDefault();
   const searchQuery = e.target.value;
-  apiService.resetPage();
   apiService.searchQuery = searchQuery;
   e.target.value = '';
-  clearMarkup();
-  createGallery();
-  refs.loadMoreBtn.classList.add('visible');
+  createWeatherTemplate();
 }
 
-function loadMoreBtnHandler() {
-  createGallery();
-}
-
-function createGallery() {
+function createWeatherTemplate() {
   apiService
     .fetchImages()
-    .then(buildListItemsMarkup)
+    .then(buildWeatherItemsMarkup)
     .catch(error => {
       alert('Somthing bad happend');
       console.warn(error);
     });
 }
 
-function buildListItemsMarkup(items) {
-  const position = refs.gallery.clientHeight;
-  if (items.length > 0) {
-    const markup = galleryTemplate(items);
-    refs.gallery.insertAdjacentHTML('beforeend', markup);
-    scroll(position);
-  } else error('No such image found');
-}
+function buildWeatherItemsMarkup(items) {
+  console.log(items);
 
-function clearMarkup() {
-  refs.gallery.innerHTML = '';
-}
-
-function ImageclickHandler(e) {
-  basicLightbox
-    .create(
-      `
-      <img src="${e.target.dataset.source}">
-  `,
-    )
-    .show();
-}
-
-function scroll(position) {
-  window.scrollTo({
-    top: position + 40,
-    behavior: 'smooth',
-  });
+  const markup = weatherTemplate(items);
+  refs.weather.insertAdjacentHTML('beforeend', markup);
+  console.log(markup);
 }
