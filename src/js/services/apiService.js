@@ -5,7 +5,7 @@ export default {
 
   query: '',
   fetchImages() {
-    const requestParams = `q=${this.query}&appid=${this.API_KEY}`;
+    const requestParams = `q=${this.query}&units=metric&appid=${this.API_KEY}`;
 
     return fetch(baseUrl + requestParams)
       .then(response => {

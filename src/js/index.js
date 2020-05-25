@@ -12,13 +12,16 @@ import _ from 'lodash';
 
 const refs = {
   input: document.getElementById('search-input'),
-  weather: document.getElementById('weather-info-today-init'),
+  currentWeather: document.getElementById('weather-info-js'),
 };
 
 refs.input.addEventListener('input', _.debounce(handleInputValue, 1000));
+refs.currentWeather.style.display = 'none';
 
 function handleInputValue(e) {
   e.preventDefault();
+  clearMarkup();
+
   const searchQuery = e.target.value;
   apiService.searchQuery = searchQuery;
   e.target.value = '';
@@ -37,8 +40,17 @@ function createWeatherTemplate() {
 
 function buildWeatherItemsMarkup(items) {
   console.log(items);
+  if (items.cod != '404') {
+    refs.currentWeather.style.display = 'flex';
+    const markup = weatherTemplate(items);
+    refs.currentWeather.insertAdjacentHTML('beforeend', markup);
+    console.log(markup);
+  } else {
+    refs.currentWeather.style.display = 'none';
+    error('No such image found');
+  }
+}
 
-  const markup = weatherTemplate(items);
-  refs.weather.insertAdjacentHTML('beforeend', markup);
-  console.log(markup);
+function clearMarkup() {
+  refs.currentWeather.innerHTML = '';
 }
