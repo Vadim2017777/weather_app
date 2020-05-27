@@ -4,6 +4,7 @@ import '../../node_modules/basiclightbox/dist/basicLightbox.min.css';
 import * as basicLightbox from 'basiclightbox';
 import weatherTemplate from '../templates/weather_forecast-template.hbs';
 import apiServiceOneDay from './services/apiServiceOneDay.js';
+import apiServiceFiveDay from './services/apiServiceFiveDays.js';
 import '@pnotify/core/dist/BrightTheme.css';
 import { alert, error } from '@pnotify/core/dist/PNotify';
 import '@pnotify/core/dist/PNotify.css';
@@ -63,4 +64,9 @@ function handleButtonClickFiveDays() {
   refs.currentWeather.style.display = 'none';
   createFiveDayWeatherTemplate();
   console.log(apiServiceOneDay.searchQuery);
+}
+
+function createFiveDayWeatherTemplate() {
+  const query = apiServiceOneDay.searchQuery;
+  apiServiceFiveDay.fetchImages(query).then(response => console.log(response));
 }
