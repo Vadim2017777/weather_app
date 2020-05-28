@@ -1,10 +1,9 @@
 'use strict';
 import '../styles/styles.css';
 import '../../node_modules/basiclightbox/dist/basicLightbox.min.css';
-import * as basicLightbox from 'basiclightbox';
 import weatherTemplate from '../templates/weather_forecast-template.hbs';
 import apiServiceOneDay from './services/apiServiceOneDay.js';
-import apiServiceFiveDay from './services/apiServiceFiveDays.js';
+import { fetchImage } from './services/apiWeatherImage.js';
 import '@pnotify/core/dist/BrightTheme.css';
 import { alert, error } from '@pnotify/core/dist/PNotify';
 import '@pnotify/core/dist/PNotify.css';
@@ -14,14 +13,14 @@ import _ from 'lodash';
 const refs = {
   input: document.getElementById('search-input'),
   currentWeather: document.getElementById('weather-info-js'),
-  weatherMainTemp: document.querySelector('.weather-main-temp__sp'),
-  buttonOneDay: document.querySelector('[data-action="oneDaysForcast"]'),
-  buttonFiveDay: document.querySelector('[data-action="5daysForcast"]'),
+  weatherMainTemp: document.querySelector('.weather-info'),
+
+  bodyImg: document.querySelector('body'),
 };
 
 refs.input.addEventListener('input', _.debounce(handleInputValue, 1000));
 refs.currentWeather.style.display = 'none';
-refs.buttonFiveDay.addEventListener('click', handleButtonClickFiveDays);
+weatherImageBackground();
 
 function handleInputValue(e) {
   e.preventDefault();
@@ -31,13 +30,14 @@ function handleInputValue(e) {
   apiServiceOneDay.searchQuery = searchQuery;
   e.target.value = '';
   createWeatherTemplate();
-  refs.buttonOneDay.classList.add('unactive');
+  weatherImageBackground();
 }
 
 function createWeatherTemplate() {
   apiServiceOneDay
     .fetchImages()
     .then(buildWeatherItemsMarkup)
+    .then(console.dir(refs.weatherMainTemp.childNodes))
     .catch(error => {
       alert('Somthing bad happend');
       console.warn(error);
@@ -60,13 +60,12 @@ function clearMarkup() {
   refs.currentWeather.innerHTML = '';
 }
 
-function handleButtonClickFiveDays() {
-  refs.currentWeather.style.display = 'none';
-  createFiveDayWeatherTemplate();
-  console.log(apiServiceOneDay.searchQuery);
+function weatherImageBackground() {
+  let searchQuery = apiServiceOneDay.searchQuery;
+  fetchImage(searchQuery).then(channgeBodyImage);
 }
 
-function createFiveDayWeatherTemplate() {
-  const query = apiServiceOneDay.searchQuery;
-  apiServiceFiveDay.fetchImages(query).then(response => console.log(response));
+function channgeBodyImage(item) {
+  refs.bodyImg.style.backgroundImage = `url("${item.largeImageURL}")`;
+  console.log(item.largeImageURL);
 }

@@ -17,10 +17,10 @@ img {
 }
 
 body {
-  font-family: Lato;
   background-repeat: no-repeat;
   background-color: rgb(188, 229, 202);
   background-size: cover;
+  background-position-x: center;
 }
 
 .container {
@@ -35,7 +35,6 @@ body {
 }
 
 #search-input {
-  background-color: aquamarine;
   width: 446px;
   padding-left: 60px;
   font-size: 18px;
