@@ -7,14 +7,16 @@ export default {
   fetchImages() {
     const requestParams = `q=${this.query}&units=metric&appid=${this.API_KEY}`;
 
-    return fetch(baseUrl + requestParams)
-      .then(response => {
-        return response.json();
-      })
-
-      .catch(error => {
-        throw error;
-      });
+    return (
+      fetch(baseUrl + requestParams)
+        .then(response => {
+          return response.json();
+        })
+        // .then(response => console.log(response))
+        .catch(error => {
+          throw error;
+        })
+    );
   },
 
   set searchQuery(string) {
