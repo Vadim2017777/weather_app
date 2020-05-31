@@ -32,7 +32,7 @@ function handleInputValue(e) {
 
 function createWeatherTemplate() {
   apiServiceOneDay
-    .fetchImages()
+    .fetchCountury()
     .then(response => {
       if (response.cod === '404') {
         refs.currentWeather.style.display = 'none';

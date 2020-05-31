@@ -4,7 +4,7 @@ export default {
   API_KEY: 'e6a412f77abd301d1f3f9864e669e17e',
 
   query: '',
-  fetchImages() {
+  fetchCountury() {
     const requestParams = `q=${this.query}&units=metric&appid=${this.API_KEY}`;
 
     return (
